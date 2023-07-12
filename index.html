@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>The Holy Bible - KJV Bible</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+  
+    h1, h2, h3, h4 {
+      color: red;
+      text-align: center;
+    }
+  
+    .book-list {
+      column-count: 3;
+      column-gap: 20px;
+    }
+  
+    .book {
+      margin-bottom: 10px;
+      color: white;
+    }
+  
+    .chapter-list {
+      column-count: 3;
+      column-gap: 20px;
+    }
+  
+    .chapter {
+      margin-bottom: 5px;
+      color: orange;
+    }
+  
+    .verse {
+      color: white;
+    }
+  
+    .floating-buttons {
+      display: block;
+      background-color: orange;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      padding: 10px;
+      margin-bottom: 40px;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+
+    /* Styles for the fetched inscription containers */
+    .fetched-inscription {
+      color: inherit; /* Reset the text color to inherit */
+    }
+  </style>  
+  <script>
+    // Function to fetch and insert the content of an Inscription
+    function fetchInscriptionContent(inscriptionId, containerId) {
+      fetch(`https://www.ord.io/content/${inscriptionId}`)
+        .then(response => response.text())
+        .then(htmlContent => {
+          const container = document.getElementById(containerId);
+          const fetchedContainer = document.createElement("div"); // Create a separate container
+          fetchedContainer.classList.add("fetched-inscription"); // Add the CSS class to the container
+          fetchedContainer.innerHTML = htmlContent; // Insert the fetched content
+          container.appendChild(fetchedContainer); // Append the fetched container to the main container
+          if (inscriptionId === "6415d3514e7b1c7c5c09fd488c4d3d0c383f8784fbd4185946f2164c226179f7i0?type=text/html&raw=true") {
+            convertFirstInscriptionHeadings();
+          }
+        })
+        .catch(error => {
+          console.error(`Error fetching Inscription ${inscriptionId}:`, error);
+        });
+    }
+
+    // Function to convert the first inscription's h3 headings to h2
+    function convertFirstInscriptionHeadings() {
+      const firstInscriptionContainer = document.querySelector("#inscriptions-container > .book:first-child");
+      if (firstInscriptionContainer) {
+        const h3Headings = firstInscriptionContainer.querySelectorAll("h3");
+        for (let i = 0; i < h3Headings.length; i++) {
+          const h3Heading = h3Headings[i];
+          const h2Heading = document.createElement("h2");
+          h2Heading.innerHTML = h3Heading.innerHTML;
+          h3Heading.parentNode.replaceChild(h2Heading, h3Heading);
+        }
+      }
+    }
+
+    // Define the order of the books in the Bible
+    const bookOrder = [
+      "Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy", "Joshua", "Judges", "Ruth",
+      "1 Samuel", "2 Samuel", "1 Kings", "2 Kings", "1 Chronicles", "2 Chronicles", "Ezra",
+      "Nehemiah", "Esther", "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon",
+      "Isaiah", "Jeremiah", "Lamentations", "Ezekiel", "Daniel", "Hosea", "Joel", "Amos",
+      "Obadiah", "Jonah", "Micah", "Nahum", "Habakkuk", "Zephaniah", "Haggai", "Zechariah",
+      "Malachi", "Matthew", "Mark", "Luke", "John", "Acts", "Romans", "1 Corinthians",
+      "2 Corinthians", "Galatians", "Ephesians", "Philippians", "Colossians", "1 Thessalonians",
+      "2 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon", "Hebrews", "James",
+      "1 Peter", "2 Peter", "1 John", "2 John", "3 John", "Jude", "Revelation"
+    ];
+
+    // Fetch and insert the content of each Inscription in the correct order
+    bookOrder.forEach((book, index) => {
+      let inscriptionId;
+      if (book === "Genesis") {
+        inscriptionId = "6415d3514e7b1c7c5c09fd488c4d3d0c383f8784fbd4185946f2164c226179f7i0?type=text/html&raw=true";
+      } else if (book === "Exodus" || book === "Lamentations" || book === "Romans") {
+        inscriptionId = "4e996a5c4016fa9306cffff3bcea7794cb513f9914435371b1baab0d33e178adi0?type=text/html&raw=true";
+      }
+      
+      const containerId = "inscriptions-container";
+      fetchInscriptionContent(inscriptionId, containerId);
+    });
+  </script>
+</head>
+<body>
+  <h1>The Holy Bible</h1>
+  
+  <div class="book-list">
+    <div class="book"><a href="#genesis">Old Testament</a></div>
+    <div class="book"><a href="#genesis">Genesis</a></div>
+    <div class="book"><a href="#exodus">Exodus</a></div>
+    <div class="book"><a href="#lamentations">Lamentations</a></div>
+    <div class="book"><a href="#romans">New Testament</a></div>
+    <div class="book"><a href="#romans">Romans</a></div>
+    <!-- Add the remaining book list items here -->
+  </div>
+  
+  <div id="inscriptions-container"></div>
+  
+  <div class="floating-buttons">
+    <a href="#" onclick="scrollToClosestHeading(); return false;">Book Index</a>
+  </div>
+</body>
+</html>
