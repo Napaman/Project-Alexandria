@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Page Title</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .footer {
+            margin-top: auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div id="content"></div>
+<div class="footer">
+  <p>theconstitutionoftheunitedstatesResponsive.projectalexandria (Responsive Edition)</p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/content/92dbe069d9374b0263311e634a9e67863c5aff9d39bb1175e1ea666db3114e9ai0') //theconstitutionoftheunitedstates.projectalexandria ID 92dbe069d9374b0263311e634a9e67863c5aff9d39bb1175e1ea666db3114e9ai0 Sat # 666280958260467
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("content").innerHTML = data; 
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+</body>
+</html>
